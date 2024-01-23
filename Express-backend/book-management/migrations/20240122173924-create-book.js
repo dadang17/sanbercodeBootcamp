@@ -30,17 +30,11 @@ module.exports = {
       thickness: {
         type: Sequelize.STRING,
       },
-      created_at: {
-        type: Sequelize.DATE,
-      },
-      updated_at: {
-        type: Sequelize.DATE,
-      },
       category_id: {
         type: Sequelize.INTEGER,
         references: {
           model: {
-            tableName: "Category",
+            tableName: "Categories",
           },
           key: "id",
         },
