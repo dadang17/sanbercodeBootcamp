@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const {
+  getBookByCategoryId,
   getAllCategory,
   getCategoryByID,
   addCategory,
@@ -14,5 +15,6 @@ router.get("/:id", getCategoryByID);
 router.post("/", addCategory);
 router.delete("/:id", deleteCategoryByID);
 router.patch("/:id", updateCategoryByID);
+router.get("/:id/books", getBookByCategoryId);
 
 module.exports = router;

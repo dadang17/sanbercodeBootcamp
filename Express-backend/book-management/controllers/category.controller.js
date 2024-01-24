@@ -1,13 +1,87 @@
 const models = require("../models");
-const { Category } = models;
+const { Sequelize, Op } = require("sequelize");
+const { Category, Book } = models;
 
 module.exports = {
   getAllCategory: async (req, res) => {
-    const category = await Category.findAll();
-    res.json({
-      message: "Success get data",
-      data: category,
-    });
+    const where = {};
+    const { name } = req.query;
+
+    const sort = req.query.sortByName;
+    if (name) where.name = { [Sequelize.Op.substring]: title };
+    if (Object.keys(req.query).length != 0) {
+      const category = await Category.findAll({
+        where: {
+          ...where,
+        },
+        order: [["name", sort]],
+      });
+
+      res.json({
+        message: "Success get data",
+        data: category,
+      });
+    } else {
+      const category = await Category.findAll();
+      res.json({
+        message: "Success get data",
+        data: category,
+      });
+    }
+  },
+
+  getBookByCategoryId: async (req, res) => {
+    const { id } = req.params;
+    // const { books } = req.params;
+    // console.log(books);
+    const where = {};
+    const { title, minYear, maxYear, minPage, maxPage } = req.query;
+    const sort = req.query.sortByTitle;
+    // console.log(sort);
+    if (title) where.title = { [Sequelize.Op.substring]: title };
+    if (minYear) where.release_year = { [Sequelize.Op.gte]: minYear };
+    if (maxYear) where.release_year = { [Sequelize.Op.lte]: maxYear };
+    if (minPage) where.total_page = { [Sequelize.Op.gte]: minPage };
+    if (maxPage) where.total_page = { [Sequelize.Op.lte]: maxPage };
+
+    console.log(Object.keys(req.query).length);
+
+    if (Object.keys(req.query).length != 0) {
+      try {
+        const category = await Category.findOne({
+          where: { id: id },
+          include: [
+            {
+              model: Book,
+              where: {
+                ...where,
+              },
+            },
+          ],
+          order: [[{ model: Book }, "title", sort]],
+        });
+        res.json({
+          message: "succes get data",
+          data: category,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        const category = await Category.findOne({
+          where: { id: id },
+          include: [{ model: Book }],
+        });
+        console.log(category);
+        res.json({
+          message: "succes get data",
+          data: category,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
   },
 
   getCategoryByID: async (req, res) => {

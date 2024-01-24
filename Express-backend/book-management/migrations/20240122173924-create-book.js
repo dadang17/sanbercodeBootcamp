@@ -30,7 +30,7 @@ module.exports = {
       thickness: {
         type: Sequelize.STRING,
       },
-      category_id: {
+      categoryId: {
         type: Sequelize.INTEGER,
         references: {
           model: {

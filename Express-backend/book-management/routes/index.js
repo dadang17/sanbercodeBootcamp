@@ -5,8 +5,8 @@ const userRouter = require("./user.router");
 const bookRouter = require("./book.router");
 const categoryRouter = require("./category.router");
 
-router.use("/user", userRouter);
-router.use("/book", bookRouter);
-router.use("/category", categoryRouter);
+router.use("/users", userRouter);
+router.use("/books", bookRouter);
+router.use("/categories", categoryRouter);
 
 module.exports = router;
