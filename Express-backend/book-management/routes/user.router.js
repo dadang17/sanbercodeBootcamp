@@ -9,10 +9,12 @@ const {
   updateUserByID,
 } = require("../controllers/user.controller");
 
+const { verifyToken } = require("../middleware/authentication/auth.token");
+
 router.get("/", getAllUser);
 router.get("/:id", getUserByID);
-router.post("/", addUser);
-router.delete("/:id", deleteUserByID);
-router.patch("/:id", updateUserByID);
+router.post("/", verifyToken, addUser);
+router.delete("/:id", verifyToken, deleteUserByID);
+router.patch("/:id", verifyToken, updateUserByID);
 
 module.exports = router;

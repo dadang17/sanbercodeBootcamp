@@ -17,7 +17,9 @@ module.exports = {
       {
         name: "dadang",
         email: "dadang@gmail.com",
-        password: "123",
+        password:
+          "$2a$12$m3qasDBMiUKYTeiobK3Iw.UCjPaP/uajUqGfiiS0d5S9MqBTGSLkq",
+        refresh_token: null,
         createdAt: new Date(),
         updatedAt: new Date(),
       },

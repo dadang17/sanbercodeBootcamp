@@ -3,7 +3,9 @@ const { User } = models;
 
 module.exports = {
   getAllUser: async (req, res) => {
-    const users = await User.findAll();
+    const users = await User.findAll({
+      attributes: ["name", "email", "createdAt", "updatedAt"],
+    });
     res.json({
       message: "Success get data",
       data: users,
@@ -12,7 +14,10 @@ module.exports = {
 
   getUserByID: async (req, res) => {
     const { id } = req.params;
-    const user = await User.findByPk(id);
+    const user = await User.findAll({
+      where: { id: id },
+      attributes: ["name", "email", "createdAt", "updatedAt"],
+    });
 
     res.json({
       message: "succes get data",
