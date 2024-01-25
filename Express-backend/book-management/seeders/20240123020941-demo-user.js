@@ -15,8 +15,8 @@ module.exports = {
 
     await queryInterface.bulkInsert("Users", [
       {
-        name: "dadang",
-        email: "dadang@gmail.com",
+        name: "user",
+        email: "user@gmail.com",
         password:
           "$2a$12$m3qasDBMiUKYTeiobK3Iw.UCjPaP/uajUqGfiiS0d5S9MqBTGSLkq",
         refresh_token: null,

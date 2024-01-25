@@ -4,6 +4,7 @@ const router = express.Router();
 const {
   validationRelease,
 } = require("../middleware/validation/inputValidation");
+const { verifyToken } = require("../middleware/authentication/auth.token");
 
 const {
   getAllBook,
@@ -15,8 +16,8 @@ const {
 
 router.get("/", getAllBook);
 router.get("/:id", getBookByID);
-router.post("/", validationRelease, addBook);
-router.delete("/:id", deleteBookByID);
-router.patch("/:id", updateBookByID);
+router.post("/", verifyToken, validationRelease, addBook);
+router.delete("/:id", verifyToken, deleteBookByID);
+router.patch("/:id", verifyToken, updateBookByID);
 
 module.exports = router;

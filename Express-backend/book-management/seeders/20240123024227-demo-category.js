@@ -14,7 +14,27 @@ module.exports = {
      */
     await queryInterface.bulkInsert("Categories", [
       {
-        name: "adventure",
+        name: "Adventure",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: "Fantasy",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: "Romance",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: "Drama",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: "Sejarah",
         createdAt: new Date(),
         updatedAt: new Date(),
       },
