@@ -1,6 +1,6 @@
 const models = require("../models");
 const { Sequelize, Op } = require("sequelize");
-const { Book } = models;
+const { Book, Category } = models;
 
 module.exports = {
   getAllBook: async (req, res) => {
@@ -24,6 +24,7 @@ module.exports = {
           where: {
             ...where,
           },
+          include: [{ model: Category, attributes: ["name"] }],
           order: [["title", sort]],
         });
 
@@ -32,25 +33,21 @@ module.exports = {
             message: "Invalid credentials!",
           });
         } else {
-          res.status(200).json({
-            message: "Success get data",
-            data: books,
-          });
+          res.status(200).json(books);
         }
       } catch (error) {
         console.log(error);
       }
     } else {
-      const books = await Book.findAll();
+      const books = await Book.findAll({
+        include: [{ model: Category, attributes: ["name"] }],
+      });
       if (books === null) {
         res.status(401).json({
           message: "Invalid credentials!",
         });
       } else {
-        res.status(200).json({
-          message: "Success get data",
-          data: books,
-        });
+        res.status(200).json(books);
       }
     }
   },
@@ -64,10 +61,7 @@ module.exports = {
         message: "Invalid credentials!",
       });
     } else {
-      res.status(200).json({
-        message: "Success get data",
-        data: books,
-      });
+      res.status(200).json(books);
     }
   },
 
@@ -91,7 +85,7 @@ module.exports = {
       });
     } else {
       res.status(201).json({
-        message: "Success create data",
+        message: "succes create data",
         data: books,
       });
     }
@@ -125,9 +119,15 @@ module.exports = {
 
     const books = await Book.findByPk(id);
 
-    res.json({
-      message: "succes update data",
-      data: books,
-    });
+    if (books === null) {
+      res.status(401).json({
+        message: "Invalid credentials!",
+      });
+    } else {
+      res.status(200).json({
+        message: "succes update data",
+        data: books,
+      });
+    }
   },
 };

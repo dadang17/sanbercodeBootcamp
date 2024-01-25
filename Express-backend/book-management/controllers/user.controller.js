@@ -6,33 +6,45 @@ module.exports = {
     const users = await User.findAll({
       attributes: ["name", "email", "createdAt", "updatedAt"],
     });
-    res.json({
-      message: "Success get data",
-      data: users,
-    });
+    if (users === null) {
+      res.status(401).json({
+        message: "Invalid credentials!",
+      });
+    } else {
+      res.status(200).json(users);
+    }
   },
 
   getUserByID: async (req, res) => {
     const { id } = req.params;
-    const user = await User.findAll({
+    const users = await User.findAll({
       where: { id: id },
       attributes: ["name", "email", "createdAt", "updatedAt"],
     });
 
-    res.json({
-      message: "succes get data",
-      data: user,
-    });
+    if (users === null) {
+      res.status(401).json({
+        message: "Invalid credentials!",
+      });
+    } else {
+      res.status(200).json(users);
+    }
   },
 
   addUser: async (req, res) => {
     const data = req.body;
 
-    const user = await User.create(data);
-    res.json({
-      message: "succes create data",
-      data: user,
-    });
+    const users = await User.create(data);
+    if (users === null) {
+      res.status(401).json({
+        message: "Invalid credentials!",
+      });
+    } else {
+      res.status(201).json({
+        message: "succes create data",
+        data: users,
+      });
+    }
   },
 
   deleteUserByID: async (req, res) => {
@@ -48,11 +60,17 @@ module.exports = {
 
     await User.update(req.body, { where: { id: id } });
 
-    const user = await User.findByPk(id);
+    const users = await User.findByPk(id);
 
-    res.json({
-      message: "succes update data",
-      data: user,
-    });
+    if (users === null) {
+      res.status(401).json({
+        message: "Invalid credentials!",
+      });
+    } else {
+      res.status(200).json({
+        message: "succes update data",
+        data: users,
+      });
+    }
   },
 };

@@ -16,17 +16,22 @@ module.exports = {
         },
         order: [["name", sort]],
       });
-
-      res.json({
-        message: "Success get data",
-        data: category,
-      });
+      if (category === null) {
+        res.status(401).json({
+          message: "Invalid credentials!",
+        });
+      } else {
+        res.status(200).json(category);
+      }
     } else {
       const category = await Category.findAll();
-      res.json({
-        message: "Success get data",
-        data: category,
-      });
+      if (category === null) {
+        res.status(401).json({
+          message: "Invalid credentials!",
+        });
+      } else {
+        res.status(200).json(category);
+      }
     }
   },
 
@@ -62,10 +67,14 @@ module.exports = {
           ],
           order: [[{ model: Book }, "title", sort]],
         });
-        res.json({
-          message: "succes get data",
-          data: category,
-        });
+
+        if (category === null) {
+          res.status(401).json({
+            message: "Invalid credentials!",
+          });
+        } else {
+          res.status(200).json(category);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -76,10 +85,13 @@ module.exports = {
           include: [{ model: Book }],
         });
         console.log(category);
-        res.json({
-          message: "succes get data",
-          data: category,
-        });
+        if (category === null) {
+          res.status(401).json({
+            message: "Invalid credentials!",
+          });
+        } else {
+          res.status(200).json(category);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -90,20 +102,29 @@ module.exports = {
     const { id } = req.params;
     const category = await Category.findByPk(id);
 
-    res.json({
-      message: "succes get data",
-      data: category,
-    });
+    if (category === null) {
+      res.status(401).json({
+        message: "Invalid credentials!",
+      });
+    } else {
+      res.status(200).json(category);
+    }
   },
 
   addCategory: async (req, res) => {
     const data = req.body;
 
     const category = await Category.create(data);
-    res.json({
-      message: "succes create data",
-      data: category,
-    });
+    if (category === null) {
+      res.status(401).json({
+        message: "Invalid credentials!",
+      });
+    } else {
+      res.status(201).json({
+        message: "succes create data",
+        data: category,
+      });
+    }
   },
 
   deleteCategoryByID: async (req, res) => {
@@ -121,9 +142,15 @@ module.exports = {
 
     const category = await Category.findByPk(id);
 
-    res.json({
-      message: "succes update data",
-      data: category,
-    });
+    if (category === null) {
+      res.status(401).json({
+        message: "Invalid credentials!",
+      });
+    } else {
+      res.status(200).json({
+        message: "succes update data",
+        data: category,
+      });
+    }
   },
 };
