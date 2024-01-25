@@ -7,33 +7,51 @@ module.exports = {
     const where = {};
     const { title, minYear, maxYear, minPage, maxPage } = req.query;
 
-    const sort = req.query.sortByTitle;
+    let sort = req.query.sortByTitle;
+    if (sort == null) {
+      sort = "asc";
+    }
     if (title) where.title = { [Sequelize.Op.substring]: title };
     if (minYear) where.release_year = { [Sequelize.Op.gte]: minYear };
     if (maxYear) where.release_year = { [Sequelize.Op.lte]: maxYear };
     if (minPage) where.total_page = { [Sequelize.Op.gte]: minPage };
     if (maxPage) where.total_page = { [Sequelize.Op.lte]: maxPage };
-    // if(sortByTitle) where.title = {[Sequelize.order]}
-    // console.log(req.query);
 
+    console.log(Object.keys(req.query).length);
     if (Object.keys(req.query).length != 0) {
-      const books = await Book.findAll({
-        where: {
-          ...where,
-        },
-        order: [["title", sort]],
-      });
+      try {
+        const books = await Book.findAll({
+          where: {
+            ...where,
+          },
+          order: [["title", sort]],
+        });
 
-      res.json({
-        message: "Success get data",
-        data: books,
-      });
+        if (books === null) {
+          res.status(401).json({
+            message: "Invalid credentials!",
+          });
+        } else {
+          res.status(200).json({
+            message: "Success get data",
+            data: books,
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
     } else {
       const books = await Book.findAll();
-      res.json({
-        message: "Success get data",
-        data: books,
-      });
+      if (books === null) {
+        res.status(401).json({
+          message: "Invalid credentials!",
+        });
+      } else {
+        res.status(200).json({
+          message: "Success get data",
+          data: books,
+        });
+      }
     }
   },
 
@@ -41,10 +59,16 @@ module.exports = {
     const { id } = req.params;
     const books = await Book.findByPk(id);
 
-    res.json({
-      message: "succes get data",
-      data: books,
-    });
+    if (books === null) {
+      res.status(401).json({
+        message: "Invalid credentials!",
+      });
+    } else {
+      res.status(200).json({
+        message: "Success get data",
+        data: books,
+      });
+    }
   },
 
   addBook: async (req, res) => {
@@ -60,10 +84,17 @@ module.exports = {
     }
 
     const books = await Book.create(data);
-    res.json({
-      message: "succes create data",
-      data: books,
-    });
+
+    if (books === null) {
+      res.status(401).json({
+        message: "Invalid credentials!",
+      });
+    } else {
+      res.status(201).json({
+        message: "Success create data",
+        data: books,
+      });
+    }
   },
 
   deleteBookByID: async (req, res) => {
